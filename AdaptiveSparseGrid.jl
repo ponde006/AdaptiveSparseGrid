@@ -219,7 +219,16 @@ function spvals(f::Function, d::Int, n::Int, b = 1.0, a = 0.0,  ϵ = .0001)
         ΔSkd = spget2(k+d, d)
         ΔH = spgrid(k, d, ΔH_tmp) ### This is what needs to adapt
         push!(ΔH_Full, ΔH)
-        Yk = Array{Float64}[Float64[f( ([i...].*(b .- a) .+ a)... ) for i in j] for j in ΔH]
+        Yk = Array{Float64}[]
+        #Yk = Array{Float64}[Float64[f( ([i...].*(b .- a) .+ a)... ) for i in j] for j in ΔH]
+        # Slightly more efficient procedure than splatting
+        for j in ΔH
+              tmp_ = Float64[]
+              for i in j
+                  push!(tmp_, f( ([i...].*(b .- a) .+ a)... ))
+              end
+              push!(Yk, tmp_)
+          end
         append!(Z , Array[Yk])
         ΔH_tmp = deepcopy(ΔH)
         if k > 0
