@@ -50,9 +50,9 @@ function a_ij(x::Float64, i::Int, x_i::Float64)
     """
     i == 1 && return 1.0
 
-    m_i = 2^(i-1) + 1
+    m_i = 2.0^(i-1) + 1.0
     dif = abs(x - x_i)
-    dif < 1/(m_i - 1) && return 1.-(m_i-1)*dif
+    dif < 1.0/(m_i - 1.0) && return 1.0-(m_i-1.0)*dif
 
     return 0.0
 end
